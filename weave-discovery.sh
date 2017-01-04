@@ -1,5 +1,8 @@
 #!/usr/bin/env sh
 
+# Wait for weave DNS register
+sleep 5
+
 retry_times=10
 wait_time=3
 
