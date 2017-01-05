@@ -4,6 +4,8 @@ MAINTAINER Andrey Kuzmin "kak-tus@mail.ru"
 
 ENV ETCD_VER=v3.0.15
 ENV DOWNLOAD_URL=https://github.com/coreos/etcd/releases/download
+ENV ETCD_HEARTBEAT_INTERVAL=500
+ENV ETCD_ELECTION_TIMEOUT=5000
 
 RUN \
   apk add --update-cache curl drill jq \
