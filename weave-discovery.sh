@@ -127,8 +127,8 @@ etcd \
   --initial-cluster-state $initial_cluster_state \
   --initial-cluster $initial_cluster \
   --initial-advertise-peer-urls http://$ip:2380 \
-  --listen-peer-urls http://$ip:2380 \
-  --listen-client-urls http://$ip:2379 \
+  --listen-peer-urls http://0.0.0.0:2380 \
+  --listen-client-urls http://0.0.0.0:2379 \
   --advertise-client-urls http://$ip:2379 \
   --initial-cluster-token etcd-cluster &
 
