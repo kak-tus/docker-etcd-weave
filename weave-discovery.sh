@@ -72,7 +72,6 @@ if [ -n "$etcd_good_member_ip" ]; then
 
         if [ "$status" != "$delete_ok" ] && [ "$status" != "$delete_gone" ]; then
           echo "ERROR: failed to remove bad peer: $i, return code $status."
-          exit 7
         else
           echo "removed bad peer: $i, return code $status."
         fi
