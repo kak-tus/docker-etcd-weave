@@ -4,7 +4,7 @@
 sleep 5
 
 retry_times=10
-wait_time=3
+wait_time=1
 
 ip=$( hostname -i | awk '{print $1}')
 echo "Our IP $ip"
