@@ -3,7 +3,7 @@
 # Wait for weave DNS register
 sleep 5
 
-retry_times=10
+retry_times=3
 wait_time=1
 
 ip=$( hostname -i | awk '{print $1}')
