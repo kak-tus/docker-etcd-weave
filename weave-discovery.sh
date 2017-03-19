@@ -1,7 +1,5 @@
 #!/usr/bin/env sh
 
-rm -rf /data/*
-
 # Wait for weave DNS register
 sleep 5
 
@@ -46,6 +44,8 @@ delete_gone=410
 
 if [ -n "$etcd_good_member_ip" ]; then
   echo "joining existing cluster"
+
+  rm -rf /data/*
 
   for i in $( echo $etcd_existing_peer_names ); do
     is_bad_peer="1"
