@@ -1,5 +1,7 @@
 #!/usr/bin/env sh
 
+rm -rf /data/*
+
 # Wait for weave DNS register
 sleep 5
 
