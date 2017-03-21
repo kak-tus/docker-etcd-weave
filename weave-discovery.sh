@@ -89,6 +89,7 @@ if [ -n "$etcd_good_member_ip" ]; then
 
   for i in $( echo $etcd_existing_peer_names | tr "," "\n" ); do
     if [ "$i" != "$ip" ]; then
+      echo "Add $i to inital cluster"
       initial_cluster="$initial_cluster,$i=http://$i:2380"
     fi
   done
@@ -106,7 +107,6 @@ if [ -n "$etcd_good_member_ip" ]; then
 
   if [ "$status" != "$add_ok" ] && [ "$status" != "$already_added" ]; then
     echo "unable to add $ip to the cluster: return code $status."
-    # exit 9
   else
     echo "added $ip to existing cluster, return code $status"
   fi
