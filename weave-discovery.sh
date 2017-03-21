@@ -88,7 +88,9 @@ if [ -n "$etcd_good_member_ip" ]; then
   initial_cluster="$ip=http://$ip:2380"
 
   for i in $( echo $etcd_existing_peer_names | tr "," "\n" ); do
-    initial_cluster="$initial_cluster,$i=http://$i:2380"
+    if [ "$i" != "$ip" ]; then
+      initial_cluster="$initial_cluster,$i=http://$i:2380"
+    fi
   done
 
   initial_cluster=$( echo $initial_cluster | sed 's/,$//' | sed 's/^,//' )
