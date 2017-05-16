@@ -6,10 +6,20 @@ sleep 5
 retry_times=3
 wait_time=1
 
-ip=$( hostname -i | awk '{print $1}')
+if [ -z "$ETCD_WEAVE_IP" ]; then
+  ip=$( hostname -i | awk '{print $1}')
+else
+  ip="$ETCD_WEAVE_IP"
+fi
+
 echo "Our IP $ip"
 
-ips=$( drill etcd.weave.local | fgrep IN | fgrep -v ';' | awk '{print $5}' | grep -E -o '^[0-9\.]+$' | tr "\n" "," | sed 's/,$//' )
+if [ -z "$ETCD_WEAVE_IPS" ]; then
+  ips=$( drill etcd.weave.local | fgrep IN | fgrep -v ';' | awk '{print $5}' | grep -E -o '^[0-9\.]+$' | tr "\n" "," | sed 's/,$//' )
+else
+  ips="$ETCD_WEAVE_IPS"
+fi
+
 echo "Discovered ips $ips"
 
 etcd_existing_peer_urls=
