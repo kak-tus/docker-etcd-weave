@@ -7,7 +7,6 @@ ENV DOWNLOAD_URL=https://github.com/coreos/etcd/releases/download
 RUN \
   apk add --no-cache \
     curl \
-    drill \
     jq \
 
   && curl -L ${DOWNLOAD_URL}/${ETCD_VER}/etcd-${ETCD_VER}-linux-amd64.tar.gz -o /tmp/etcd-${ETCD_VER}-linux-amd64.tar.gz \
@@ -26,6 +25,5 @@ ENV ETCD_HEARTBEAT_INTERVAL=500
 ENV ETCD_ELECTION_TIMEOUT=5000
 
 ENV ETCD_WEAVE_IP=
-ENV ETCD_WEAVE_IPS=
 
 CMD ["/usr/local/bin/weave-discovery.sh"]
