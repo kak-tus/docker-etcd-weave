@@ -25,8 +25,8 @@ done
 echo "etcd good member ip: $etcd_good_member_ip"
 echo "etcd existing peer names: $etcd_existing_peer_names"
 
-initial_cluster_state=
-initial_cluster=
+initial_cluster_state=""
+initial_cluster=""
 
 add_ok=201
 already_added=409
@@ -34,36 +34,42 @@ already_added=409
 if [ -n "$etcd_good_member_ip" ]; then
   echo "Joining existing cluster"
 
-  initial_cluster_state=existing
-
-  initial_cluster="$ip=http://$ip:2380"
+  initial_cluster_state="existing"
+  is_new_member="1"
 
   for i in $( echo $etcd_existing_peer_names | tr "," "\n" ); do
-    if [ "$i" != "$ip" ]; then
-      echo "Add $i to inital cluster"
-      initial_cluster="$initial_cluster,$i=http://$i:2380"
+    if [ "$i" = "$ip" ]; then
+      is_new_member=""
     fi
+
+    initial_cluster="$initial_cluster,$i=http://$i:2380"
   done
+
+  if [ -n "$is_new_member" ]; then
+    initial_cluster="$initial_cluster,$ip=http://$ip:2380"
+  fi
 
   initial_cluster=$( echo $initial_cluster | sed 's/,$//' | sed 's/^,//' )
 
-  status=0
-  retry=1
+  if [ -n "$is_new_member" ]; then
+    status=0
+    retry=1
 
-  until [ "$status" = "$add_ok" ] || [ "$status" = "$already_added" ] || [ "$retry" = "$retry_times" ]; do
-    status=$( curl -f -s -w %{http_code} -o /dev/null -X POST "http://$etcd_good_member_ip:2379/v2/members" -H "Content-Type: application/json" -d "{\"clientURLs\": [\"http://$ip:2379\"], \"peerURLs\": [\"http://$ip:2380\"], \"name\": \"$ip\"}" )
-    echo "Adding IP $ip, retry $((retry++)), return code $status."
-    sleep $wait_time
-  done
+    until [ "$status" = "$add_ok" ] || [ "$status" = "$already_added" ] || [ "$retry" = "$retry_times" ]; do
+      status=$( curl -f -s -w %{http_code} -o /dev/null -X POST "http://$etcd_good_member_ip:2379/v2/members" -H "Content-Type: application/json" -d "{\"clientURLs\": [\"http://$ip:2379\"], \"peerURLs\": [\"http://$ip:2380\"], \"name\": \"$ip\"}" )
+      echo "Adding IP $ip, retry $((retry++)), return code $status."
+      sleep $wait_time
+    done
 
-  if [ "$status" != "$add_ok" ] && [ "$status" != "$already_added" ]; then
-    echo "Unable to add $ip to the cluster: return code $status."
-  else
-    echo "Added $ip to existing cluster, return code $status"
+    if [ "$status" != "$add_ok" ] && [ "$status" != "$already_added" ]; then
+      echo "Unable to add $ip to the cluster: return code $status."
+    else
+      echo "Added $ip to existing cluster, return code $status"
+    fi
   fi
 else
   echo "Creating new cluster"
-  initial_cluster_state=new
+  initial_cluster_state="new"
 
   for i in $( echo $ips | tr "," "\n" ); do
     initial_cluster="$initial_cluster,$i=http://$i:2380"
