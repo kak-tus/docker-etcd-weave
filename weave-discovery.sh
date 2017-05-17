@@ -34,8 +34,6 @@ already_added=409
 if [ -n "$etcd_good_member_ip" ]; then
   echo "Joining existing cluster"
 
-  rm -rf /data/*
-
   initial_cluster_state=existing
 
   initial_cluster="$ip=http://$ip:2380"
