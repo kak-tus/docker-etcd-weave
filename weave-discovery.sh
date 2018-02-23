@@ -98,3 +98,5 @@ child=$!
 
 trap "kill $child" INT TERM
 wait "$child"
+trap - INT TERM
+wait "$child"
