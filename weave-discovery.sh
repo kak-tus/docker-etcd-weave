@@ -93,7 +93,7 @@ etcd \
   --initial-cluster-token etcd-cluster \
   --strict-reconfig-check \
   --auto-compaction-mode=periodic \
-  --auto-compaction-retention=24h \
+  --auto-compaction-retention=1h \
   &
 
 child=$!
