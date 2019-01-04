@@ -92,7 +92,8 @@ etcd \
   --advertise-client-urls http://$ip:2379 \
   --initial-cluster-token etcd-cluster \
   --strict-reconfig-check \
-  --auto-compaction-retention 1 \
+  --auto-compaction-mode=periodic \
+  --auto-compaction-retention=24h \
   &
 
 child=$!

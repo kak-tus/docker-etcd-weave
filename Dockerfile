@@ -1,8 +1,8 @@
-FROM alpine:3.7
+FROM alpine:3.8
 
 ENV \
-  ETCD_VER=v3.3.1 \
-  ETCD_SHA256=dc6d74e364ece87c34c86a997b90016ab6ea8845fd13fdf8c520afdf796b000d \
+  ETCD_VER=v3.3.10 \
+  ETCD_SHA256=1620a59150ec0a0124a65540e23891243feb2d9a628092fb1edcc23974724a45 \
   DOWNLOAD_URL=https://github.com/coreos/etcd/releases/download \
   \
   ETCD_HEARTBEAT_INTERVAL=500 \
